@@ -1,0 +1,25 @@
+apiVersion: v2
+name: Test-HelmChart
+description: Test task
+type: application
+version: 0.1.0
+
+
+sources:
+  - hhttps://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus
+  - https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-blackbox-exporter
+  - https://github.com/grafana/helm-charts/tree/main/charts/grafana
+
+dependencies:
+  - name: prometheus
+    version: "15.12.*"
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled
+  - name: prometheus-blackbox-exporter
+    version: "6.0.*"
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus-blackbox-exporter.enabled
+  - name: grafana
+    version: "6.32.*"
+    repository: https://grafana.github.io/helm-charts
+    condition: grafana.enabled

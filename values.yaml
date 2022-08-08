@@ -1,0 +1,81 @@
+grafana:
+  enabled: true
+  # namespaceOverride: "unitest"
+
+  dashboards:
+    default:
+      blackbox-exporter:
+        gnetId: 7587
+        revision: 1
+        datasource: Prometheus 
+      # blackbox-exporter:
+      #   gnetId: 13659
+      #   revision: 1
+      #   datasource: Prometheus
+
+  dashboardProviders: 
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+
+  datasources: 
+   datasources.yaml:
+     apiVersion: 1
+     datasources:
+     - name: Prometheus
+       type: prometheus
+       url: http://app-prometheus-server
+       access: proxy
+       isDefault: true
+  
+  adminUser: admin
+  adminPassword: unitest123
+
+prometheus:
+
+  enabled: true
+  # forceNamespace: "unitest"
+
+  global:
+    scrape_interval: 10s
+
+  # kube-state-metrics:
+    # namespaceOverride: "unitest"
+  
+  extraScrapeConfigs: |
+    - job_name: 'blackbox-external-targets'
+      metrics_path: /probe
+      params:
+        module: [http_2xx]
+      static_configs:
+        - targets:
+          - https://www.google.com
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: app-prometheus-blackbox-exporter:9115
+
+prometheus-blackbox-exporter:
+  enabled: true
+  # namespaceOverride: "unitest"
+
+  config:
+    modules:
+      http_2xx:
+        prober: http
+        timeout: 5s
+        http:
+          valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+          follow_redirects: true
+          preferred_ip_protocol: "ip4"
