@@ -8,10 +8,11 @@ grafana:
         gnetId: 7587
         revision: 1
         datasource: Prometheus 
-      # blackbox-exporter:
-      #   gnetId: 13659
-      #   revision: 1
-      #   datasource: Prometheus
+      blackbox-exporter-probe:
+        gnetId: 13659
+        revision: 1
+        datasource: Prometheus
+
 
   dashboardProviders: 
     dashboardproviders.yaml:
