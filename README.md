@@ -1,6 +1,9 @@
 # Test_Helm_Chart
-
-This chart help us to probe google.com endpoint and visualise his avalability in [grafana dashboard](https://grafana.com/grafana/dashboards/7587)
+Test task goals:
+- create namespace "unitest" with Prometheus, BlackBox exporter and Grafana
+- BlackBox exporter aimed on "google.com"
+- Grafana with [dashboard](https://grafana.com/grafana/dashboards/13659-blackbox-exporter-http-prober/) 
+- Grafana admin panel with password "unitest123"
 ## Dependencies
 
 By default this chart installs additional, dependent charts:
